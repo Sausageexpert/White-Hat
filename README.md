@@ -1,2 +1,2 @@
-# staticSquare
-A static square made using Matter.js physics engine
+# p5.play-boilerplate
+Boiler plate for p5.play

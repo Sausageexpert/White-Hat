@@ -1,58 +1,39 @@
-const Engine = Matter.Engine;
-const World =Matter.World;
-const Bodies = Matter.Bodies;
 
-var engine,world;
-var ground;
-var ball;
-var bouncingPad;
+var car, wall;
+var speed, weight;
+var gameState = "play";
 
 function setup() {
-  var canvas = createCanvas(400,400);
-  engine = Engine.create();
-  world = engine.world;
+  createCanvas(1600,400);
 
-  bouncingPad = createSprite(200, 0, 400, 10);
-
-
-  // ball.shapeColor = "red";
-
-  var ground_options ={
-    isStatic:true
-  }
-
-  var ball_options ={
-restitution: 2.0
-  }
-
-  ground = Bodies.rectangle(200,380,400,50,ground_options);
-  World.add(world,ground);
-
-  ball = Bodies.circle(200, 80, 30, ball_options);
-  World.add(world,ball);
-
-  bouncingPad = Bodies.rect(200, 10, 400, 10);
-  World.add(world,bouncingPad);
+speed = random(10, 20);
+weight = random(400, 1500);
   
-  console.log(ground);
-  console.log(ground.position.x); 
-  console.log(ground.position.y); 
+  car = createSprite(80, 200, 60, 20);
+  car.shapeColor = color(255, 0, 0);
+
+
+  wall = createSprite(1500, 200, 10, 400);
+  wall.shapeColor = color(255, 255, 255);
+
 }
 
 function draw() {
-  background(0);  
-  Engine.update(engine);
-  rectMode(CENTER);
-  ellipseMode(RADIUS);
-
-  fill("red");
+  background(0,0,0);  
   
-  if (bouncingPad.y - ball.y === 0){
-      ball.velocityY = (-1)*ball.velocityY;
+  car.velocityX = speed;
+
+  // telling the car when to stop
+
+  if (wall.x - car.x < wall.width/2 + car.width/2 && weight*speed*speed < 160000){
+   car.velocityX = 0;
+   car.shapeColor = color(0, 0, 255);
   }
 
-  rect(ground.position.x,ground.position.y,400,50);
-  ellipse(ball.position.x, ball.position.y, 30, 30);
+  if (wall.x - car.x < wall.width/2 + car.width/2 && weight*speed*speed > 160000){
+    car.velocityX = 0;
+    car.shapeColor = color(0, 255, 0);
+   }
 
   drawSprites();
 }
